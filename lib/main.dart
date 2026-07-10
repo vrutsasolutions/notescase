@@ -34,7 +34,7 @@ class VaultApp extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp(
-      title: 'Vault Notes',
+      title: 'Notes Case',
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
       theme: ThemeData(

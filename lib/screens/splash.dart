@@ -67,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen>
                       size: 48, color: cs.primary),
                 ),
                 const SizedBox(height: 20),
-                Text('Vault Notes',
+                Text('Notes Case',
                     style: Theme.of(context)
                         .textTheme
                         .headlineMedium

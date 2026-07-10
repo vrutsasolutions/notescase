@@ -88,7 +88,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               children: [
                 Icon(Icons.shield_rounded, size: 48, color: cs.primary),
                 const SizedBox(height: 16),
-                Text('Vault Notes',
+                Text('Notes Case',
                     style: Theme.of(context).textTheme.headlineMedium),
                 const SizedBox(height: 8),
                 Text(
