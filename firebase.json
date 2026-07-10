@@ -1,0 +1,7 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "flutter": {"platforms":{"dart":{"lib/firebase_options.dart":{"projectId":"vault-notes-vrutsa","configurations":{"android":"1:294441691064:android:a3c40e8780f7fef2ab114d","web":"1:294441691064:web:2cf7097758daabb8ab114d","windows":"1:294441691064:web:7026eb13b6b0880bab114d"}}},"android":{"default":{"projectId":"vault-notes-vrutsa","appId":"1:294441691064:android:a3c40e8780f7fef2ab114d","fileOutput":"android/app/google-services.json"}}}}
+}
