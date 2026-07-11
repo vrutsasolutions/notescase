@@ -36,12 +36,18 @@ dev_dependencies:
   flutter_lints: ^4.0.0
   flutter_launcher_icons: 0.14.4
 
-flutter:
-  uses-material-design: true
+
 
 # REMOVED from v1 (these caused the blank screen — no web/Windows support):
 #   sqflite_sqlcipher, flutter_secure_storage, local_auth, path_provider,
 #   path, crypto, file_picker
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/logo.png
+
+
 flutter_launcher_icons:
   android: true
   ios: false

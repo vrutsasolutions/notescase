@@ -86,7 +86,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.shield_rounded, size: 48, color: cs.primary),
+                Image.asset(
+  'assets/logo.png',
+  width: 120,
+  height: 120,
+),
                 const SizedBox(height: 16),
                 Text('Notes Case',
                     style: Theme.of(context).textTheme.headlineMedium),

@@ -136,7 +136,11 @@ class _Splash extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.shield_rounded, size: 42, color: cs.primary),
+            Image.asset(
+  'assets/logo.png',
+  width: 92,
+  height: 92,
+),
             const SizedBox(height: 16),
             const CircularProgressIndicator(),
             const SizedBox(height: 16),

@@ -134,8 +134,8 @@ class _SplashScreenState extends State<SplashScreen>
                           child: Transform.scale(
                             scale: _iconScale.value,
                             child: Container(
-                              width: 92,
-                              height: 92,
+                              width: 142,
+                              height: 142,
                               decoration: BoxDecoration(
                                 color: cs.primaryContainer,
                                 borderRadius: BorderRadius.circular(26),
@@ -147,8 +147,11 @@ class _SplashScreenState extends State<SplashScreen>
                                   ),
                                 ],
                               ),
-                              child: Icon(Icons.shield_rounded,
-                                  size: 50, color: cs.primary),
+                              child: Image.asset(
+  'assets/logo.png',
+  width: 100,
+  height: 100,
+),
                             ),
                           ),
                         ),
