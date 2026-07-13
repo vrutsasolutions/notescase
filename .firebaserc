@@ -5,11 +5,10 @@
     "notes case": "notes-case-7c81e"
   },
   "targets": {
-    
     "notes-case-7c81e": {
       "hosting": {
         "main-site": [
-          "notes-case-7c81e"
+          "notescaseapp"
         ]
       }
     }
