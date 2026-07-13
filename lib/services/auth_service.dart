@@ -9,13 +9,16 @@ class AuthService {
   Stream<User?> get authStateChanges => _auth.authStateChanges();
   User? get currentUser => _auth.currentUser;
 
-  Future<UserCredential> signInWithGoogle() {
+  Future<void> signInWithGoogle() {
     final provider = GoogleAuthProvider();
     if (kIsWeb) {
-      // Web: OAuth popup, handled entirely by the Firebase JS SDK.
-      return _auth.signInWithPopup(provider);
+      // Web: redirect flow — works reliably in Safari, unlike popups,
+      // which get blocked by Safari's tracking prevention / storage rules.
+      // This navigates the browser away; the signed-in user is picked up
+      // later via authStateChanges once the app reloads after redirect.
+      return _auth.signInWithRedirect(provider);
     }
-    // Android / iOS: native browser flow, no extra plugin required.
+    // Android / iOS native app: native browser flow, unaffected by this.
     return _auth.signInWithProvider(provider);
   }
 

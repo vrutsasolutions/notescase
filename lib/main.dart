@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'screens/splash.dart';
@@ -22,6 +24,17 @@ void main() {
 /// Firebase init as a provider: loading → spinner, error → readable screen.
 final firebaseInitProvider = FutureProvider<void>((ref) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  if (kIsWeb) {
+    // Picks up the result of signInWithRedirect() after the browser
+    // navigates back from Google. Errors here (e.g. unauthorized domain,
+    // user cancelled) are caught so they don't fail app startup silently.
+    try {
+      await FirebaseAuth.instance.getRedirectResult();
+    } catch (e) {
+      debugPrint('Redirect sign-in error: $e');
+    }
+  }
 });
 
 const _seed = Color(0xFF2F6B57);
@@ -58,6 +71,7 @@ class VaultApp extends ConsumerWidget {
     );
   }
 }
+
 /// Shows the splash screen first, then hands off to the real bootstrap flow.
 class _AppRoot extends StatefulWidget {
   const _AppRoot();
@@ -79,6 +93,7 @@ class _AppRootState extends State<_AppRoot> {
     return const Bootstrap();
   }
 }
+
 /// Step 1: initialize Firebase with visible states.
 class Bootstrap extends ConsumerWidget {
   const Bootstrap({super.key});
@@ -137,10 +152,10 @@ class _Splash extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-  'assets/logo.png',
-  width: 92,
-  height: 92,
-),
+              'assets/logo.png',
+              width: 92,
+              height: 92,
+            ),
             const SizedBox(height: 16),
             const CircularProgressIndicator(),
             const SizedBox(height: 16),

@@ -1,4 +1,4 @@
-name: vault_notes
+name: notes_case
 description: " — a privacy-first personal notebook backed by Firebase."
 publish_to: 'none'
 version: 2.0.0+2
