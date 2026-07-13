@@ -87,10 +87,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
-  'assets/logo.png',
-  width: 120,
-  height: 120,
-),
+                  'assets/logo.png',
+                  width: 120,
+                  height: 120,
+                ),
                 const SizedBox(height: 16),
                 Text('Notes Case',
                     style: Theme.of(context).textTheme.headlineMedium),
@@ -171,12 +171,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             fontSize: 12.5, color: cs.onErrorContainer)),
                   ),
                 ],
-                const SizedBox(height: 26),
-                Text(
-                  'Only your account can read your notes — enforced by Firestore security rules.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12, color: cs.outline),
-                ),
               ],
             ),
           ),

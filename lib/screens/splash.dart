@@ -105,87 +105,110 @@ class _SplashScreenState extends State<SplashScreen>
                 ],
               ),
             ),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    width: 160,
-                    height: 160,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        // Pulsing glow behind the icon.
-                        Container(
-                          width: 130 * _glow.value,
-                          height: 130 * _glow.value,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: RadialGradient(
-                              colors: [
-                                cs.primary.withValues(alpha: 0.35),
-                                cs.primary.withValues(alpha: 0.0),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Transform.rotate(
-                          angle: _iconRotate.value,
-                          child: Transform.scale(
-                            scale: _iconScale.value,
-                            child: Container(
-                              width: 142,
-                              height: 142,
+            child: Stack(
+              children: [
+                Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        width: 160,
+                        height: 160,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            // Pulsing glow behind the icon.
+                            Container(
+                              width: 130 * _glow.value,
+                              height: 130 * _glow.value,
                               decoration: BoxDecoration(
-                                color: cs.primaryContainer,
-                                borderRadius: BorderRadius.circular(26),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: cs.primary.withValues(alpha: 0.4),
-                                    blurRadius: 24,
-                                    spreadRadius: 2,
-                                  ),
-                                ],
+                                shape: BoxShape.circle,
+                                gradient: RadialGradient(
+                                  colors: [
+                                    cs.primary.withValues(alpha: 0.35),
+                                    cs.primary.withValues(alpha: 0.0),
+                                  ],
+                                ),
                               ),
-                              child: Image.asset(
-  'assets/logo.png',
-  width: 100,
-  height: 100,
-),
                             ),
+                            Transform.rotate(
+                              angle: _iconRotate.value,
+                              child: Transform.scale(
+                                scale: _iconScale.value,
+                                child: Container(
+                                  width: 142,
+                                  height: 142,
+                                  decoration: BoxDecoration(
+                                    color: cs.primaryContainer,
+                                    borderRadius: BorderRadius.circular(26),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: cs.primary.withValues(alpha: 0.4),
+                                        blurRadius: 24,
+                                        spreadRadius: 2,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Image.asset(
+                                    'assets/logo.png',
+                                    width: 100,
+                                    height: 100,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      FadeTransition(
+                        opacity: _fade,
+                        child: SlideTransition(
+                          position: _textSlide,
+                          child: Column(
+                            children: [
+                              Text('Notes Case',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 0.5,
+                                      )),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Private notes, synced securely',
+                                style: TextStyle(
+                                    color: cs.onSurfaceVariant,
+                                    letterSpacing: 0.3),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 8),
-                  FadeTransition(
+                ),
+                // Footer — company credit at the bottom of the splash screen.
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 24,
+                  child: FadeTransition(
                     opacity: _fade,
-                    child: SlideTransition(
-                      position: _textSlide,
-                      child: Column(
-                        children: [
-                          Text('Notes Case',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 0.5,
-                                  )),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Private notes, synced securely',
-                            style: TextStyle(
-                                color: cs.onSurfaceVariant,
-                                letterSpacing: 0.3),
-                          ),
-                        ],
+                    child: Center(
+                      child: Text(
+                        'from Vrutsa Solutions',
+                        style: TextStyle(
+                          color: cs.onSurfaceVariant.withValues(alpha: 0.7),
+                          fontSize: 12,
+                          letterSpacing: 0.4,
+                        ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },
