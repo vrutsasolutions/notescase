@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'screens/splash.dart';
@@ -9,32 +7,13 @@ import 'providers.dart';
 import 'screens/home.dart';
 import 'screens/sign_in.dart';
 
-/// -----------------------------------------------------------------------
-/// THE BLANK-SCREEN FIX, in one sentence:
-/// runApp() is called IMMEDIATELY — all async initialization happens
-/// inside the widget tree, where loading and failure states are VISIBLE.
-/// (v1 awaited the database before runApp(); when that future threw on
-/// web/Windows, no frame was ever rendered → blank white screen.)
-/// -----------------------------------------------------------------------
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: VaultApp()));
 }
 
-/// Firebase init as a provider: loading → spinner, error → readable screen.
 final firebaseInitProvider = FutureProvider<void>((ref) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  if (kIsWeb) {
-    // Picks up the result of signInWithRedirect() after the browser
-    // navigates back from Google. Errors here (e.g. unauthorized domain,
-    // user cancelled) are caught so they don't fail app startup silently.
-    try {
-      await FirebaseAuth.instance.getRedirectResult();
-    } catch (e) {
-      debugPrint('Redirect sign-in error: $e');
-    }
-  }
 });
 
 const _seed = Color(0xFF2F6B57);
@@ -72,7 +51,6 @@ class VaultApp extends ConsumerWidget {
   }
 }
 
-/// Shows the splash screen first, then hands off to the real bootstrap flow.
 class _AppRoot extends StatefulWidget {
   const _AppRoot();
 
@@ -94,7 +72,6 @@ class _AppRootState extends State<_AppRoot> {
   }
 }
 
-/// Step 1: initialize Firebase with visible states.
 class Bootstrap extends ConsumerWidget {
   const Bootstrap({super.key});
 
@@ -114,7 +91,6 @@ class Bootstrap extends ConsumerWidget {
   }
 }
 
-/// Step 2: route on auth state — sign-in screen or the app.
 class AuthGate extends ConsumerWidget {
   const AuthGate({super.key});
 
@@ -134,10 +110,6 @@ class AuthGate extends ConsumerWidget {
     );
   }
 }
-
-/// -----------------------------------------------------------------------
-/// Shared splash / error widgets — the app can never render "nothing".
-/// -----------------------------------------------------------------------
 
 class _Splash extends StatelessWidget {
   const _Splash({required this.message});

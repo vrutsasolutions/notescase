@@ -1,12 +1,28 @@
 {
   "projects": {
-    "default": "vault-notes-vrutsa"
+    "default": "notes-case-7c81e",
+    "notes-case": "notes-case",
+    "notes case": "notes-case-7c81e"
   },
   "targets": {
     "vault-notes-vrutsa": {
       "hosting": {
         "main-site": [
           "notescase"
+        ]
+      }
+    },
+    "notes-case": {
+      "hosting": {
+        "main-site": [
+          "notes-case"
+        ]
+      }
+    },
+    "notes-case-7c81e": {
+      "hosting": {
+        "main-site": [
+          "notes-case-7c81e"
         ]
       }
     }

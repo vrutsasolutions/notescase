@@ -190,24 +190,38 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ),
                 // Footer — company credit at the bottom of the splash screen.
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 24,
-                  child: FadeTransition(
-                    opacity: _fade,
-                    child: Center(
-                      child: Text(
-                        'from Vrutsa Solutions',
-                        style: TextStyle(
-                          color: cs.onSurfaceVariant.withValues(alpha: 0.7),
-                          fontSize: 12,
-                          letterSpacing: 0.4,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+Positioned(
+  left: 0,
+  right: 0,
+  bottom: 24,
+  child: FadeTransition(
+    opacity: _fade,
+    child: Center(
+      child: Column(
+        children: [
+          Text(
+            'from',
+            style: TextStyle(
+              color: cs.onSurfaceVariant.withValues(alpha: 0.6),
+              fontSize: 11,
+              letterSpacing: 0.4,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            'Vrutsa Solutions',
+            style: TextStyle(
+              color: cs.onSurfaceVariant.withValues(alpha: 0.8),
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.4,
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+),
               ],
             ),
           );
