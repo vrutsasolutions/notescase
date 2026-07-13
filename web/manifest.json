@@ -1,6 +1,6 @@
 {
-    "name": "vault_notes",
-    "short_name": "vault_notes",
+    "name": "Notes Case",
+    "short_name": "Notes Case",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

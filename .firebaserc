@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "vault-notes-vrutsa"
-  }
+  },
+  "targets": {
+    "vault-notes-vrutsa": {
+      "hosting": {
+        "main-site": [
+          "notescase"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
