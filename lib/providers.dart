@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'models/note.dart';
 import 'services/auth_service.dart';
 import 'services/note_repository.dart';
@@ -14,9 +14,14 @@ import 'services/note_repository.dart';
 
 final authServiceProvider = Provider<AuthService>((ref) => AuthService());
 
-final noteRepositoryProvider =
-    Provider<NoteRepository>((ref) => NoteRepository(FirebaseFirestore.instance));
-
+final noteRepositoryProvider = Provider<NoteRepository>(
+      (ref) => NoteRepository(
+    FirebaseFirestore.instanceFor(
+      app: Firebase.app(),
+      databaseId: 'default',
+    ),
+  ),
+);
 /// ----------------------------------------------------------------------
 /// Auth state
 /// ----------------------------------------------------------------------
