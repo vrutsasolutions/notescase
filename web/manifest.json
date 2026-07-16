@@ -1,6 +1,6 @@
 {
-    "name": "Notes Case",
-    "short_name": "Notes Case",
+    "name": "NotesCase",
+    "short_name": "NotesCase",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

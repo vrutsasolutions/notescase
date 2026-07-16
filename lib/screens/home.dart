@@ -105,7 +105,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           slivers: [
             SliverAppBar(
               floating: true,
-              title: const Text('Notes Case'),
+              title: const Text('NotesCase'),
               actions: [
                 IconButton(
                   tooltip: 'Theme: ${themeMode.name}',

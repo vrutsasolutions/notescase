@@ -2,7 +2,7 @@
   "projects": {
     "default": "notes-case-7c81e",
     "notes-case": "notes-case",
-    "notes case": "notes-case-7c81e"
+    "NotesCase": "notes-case-7c81e"
   },
   "targets": {
     "notes-case-7c81e": {

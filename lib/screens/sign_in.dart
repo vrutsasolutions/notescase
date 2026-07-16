@@ -92,7 +92,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   height: 120,
                 ),
                 const SizedBox(height: 16),
-                Text('Notes Case',
+                Text('NotesCase',
                     style: Theme.of(context).textTheme.headlineMedium),
                 const SizedBox(height: 8),
                 Text(

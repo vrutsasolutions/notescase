@@ -1,4 +1,4 @@
-# Notes Case v2 — Firebase edition
+# NotesCase v2 — Firebase edition
 
 Full rebuild after the project audit. Local encrypted SQLite is replaced by **Cloud Firestore** with **Google sign-in**, which works on the platforms you're actually running (web, Windows via web, Android, iOS) and gives you sync + backup for free.
 

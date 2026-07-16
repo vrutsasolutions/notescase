@@ -167,7 +167,7 @@ class _SplashScreenState extends State<SplashScreen>
                           position: _textSlide,
                           child: Column(
                             children: [
-                              Text('Notes Case',
+                              Text('NotesCase',
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineMedium
