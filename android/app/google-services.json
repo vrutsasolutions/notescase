@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1034669878006:android:6bf1fdfbf4129962581ad7",
+        "mobilesdk_app_id": "1:1034669878006:android:88525fac59b266bb581ad7",
         "android_client_info": {
-          "package_name": "com.vrutsa.notescase"
+          "package_name": "com.notescase.app"
         }
       },
       "oauth_client": [
@@ -43,12 +43,20 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1034669878006:android:e20bac32d7a001c8581ad7",
+        "mobilesdk_app_id": "1:1034669878006:android:6bf1fdfbf4129962581ad7",
         "android_client_info": {
           "package_name": "com.vrutsa.notescase"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1034669878006-phc0206u98jtrc1qdspta1g2899uv4ei.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vrutsa.notescase",
+            "certificate_hash": "e9f4e48d7de9e566e765778e8b2df9a6b1a9d1c0"
+          }
+        },
         {
           "client_id": "1034669878006-ggmf2lbfpoc7kav9vkgdeh5dbtmrg048.apps.googleusercontent.com",
           "client_type": 3
