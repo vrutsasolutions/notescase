@@ -1,15 +1,25 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'screens/splash.dart';
 import 'firebase_options.dart';
 import 'providers.dart';
 import 'screens/home.dart';
 import 'screens/sign_in.dart';
 import 'screens/privacy_policy_screen.dart';
+import 'screens/delete_account_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  // Use clean path URLs on web (e.g. /privacy, /delete-account) instead of
+  // the default hash-based URLs (e.g. /#/privacy). Required for direct,
+  // reviewer-friendly links like https://notescaseapp.web.app/privacy to
+  // load straight to that screen instead of falling back to home.
+  if (kIsWeb) {
+    usePathUrlStrategy();
+  }
   runApp(const ProviderScope(child: VaultApp()));
 }
 
@@ -48,22 +58,26 @@ class VaultApp extends ConsumerWidget {
         ),
       ),
       home: const _AppRoot(),
-      // Lets /privacy work as a real, directly-loadable URL when this app
-      // is built for web and deployed (flutter build web). On web, if the
-      // browser's initial URL is /privacy, Flutter looks it up here and
-      // shows PrivacyPolicyScreen directly — bypassing splash/auth
-      // entirely — so it behaves like a normal static page for anyone
-      // (including Play Store review) visiting that link.
+      // Lets /privacy and /delete-account work as real, directly-loadable
+      // URLs when this app is built for web and deployed
+      // (flutter build web). On web, if the browser's initial URL matches
+      // one of these, Flutter looks it up here and shows that screen
+      // directly — bypassing splash/auth entirely — so each behaves like
+      // a normal static page for anyone (including Play Store review)
+      // visiting that link.
       //
-      // In-app taps (from sign_in.dart) still use
+      // In-app taps (from sign_in.dart / home.dart) still use
       // Navigator.of(context).push(MaterialPageRoute(...)) directly, which
-      // works regardless of this map — this route is what makes the
-      // *direct URL* work, not what the in-app button uses.
+      // works regardless of this map — this route table is what makes the
+      // *direct URLs* work, not what the in-app buttons use.
       //
-      // Requires a hosting rewrite so a hard refresh on /privacy doesn't
-      // 404 — see firebase.json note in the deployment steps.
+      // Requires:
+      //   1. usePathUrlStrategy() above (so URLs have no # in them).
+      //   2. A hosting rewrite so a hard refresh on these paths doesn't
+      //      404 — see firebase.json note in the deployment steps.
       routes: {
         '/privacy': (context) => const PrivacyPolicyScreen(),
+        '/delete-account': (context) => const DeleteAccountScreen(),
       },
     );
   }

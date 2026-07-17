@@ -46,13 +46,12 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          _TldrBox(cs: cs),
 
           _Heading('1. Who runs NotesCase'),
           _Body(
             'NotesCase ("the app") is developed and operated by Vrutsa '
             'Solutions ("we", "us"), based in Chennai, Tamil Nadu, India. '
-            'For any privacy question, write to privacy@vrutsa.com.',
+            'For any privacy question, write to contact@vrutsasolutions.com.',
           ),
 
           _Heading('2. What we collect'),
@@ -61,7 +60,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
           const _BulletList([
             'Name',
             'Email address',
-            'Profile photo URL (if set)',
             'A unique Google user ID',
           ]),
           _Body('We use this only to identify you and to keep your notes attached to your account.'),
@@ -130,7 +128,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ]),
           _Body(
             'If you cannot access the app for any reason and need your account '
-            'deleted, email privacy@vrutsa.com from the same Google address you '
+            'deleted, email contact@vrutsasolutions.com from the same Google address you '
             'signed in with, and we will complete the deletion within 30 days.',
           ),
           _Body(
@@ -181,40 +179,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
   }
 }
 
-class _TldrBox extends StatelessWidget {
-  final ColorScheme cs;
-  const _TldrBox({required this.cs});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: cs.primaryContainer.withOpacity(0.35),
-        borderRadius: BorderRadius.circular(8),
-        border: Border(left: BorderSide(color: cs.primary, width: 3)),
-      ),
-      child: RichText(
-        text: TextSpan(
-          style: DefaultTextStyle.of(context).style.copyWith(fontSize: 14.5, height: 1.4),
-          children: const [
-            TextSpan(text: 'The short version. ', style: TextStyle(fontWeight: FontWeight.bold)),
-            TextSpan(
-              text: 'NotesCase is a private notebook for your notes, passwords, '
-                  'Wi-Fi details and similar personal information. Your notes are '
-                  'saved to your own Google account through Firebase Firestore. '
-                  'Nobody else can read them — not the developer, not other users. '
-                  'You can delete your account and all your data from inside the '
-                  'app at any time.',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class _Heading extends StatelessWidget {
   final String text;
