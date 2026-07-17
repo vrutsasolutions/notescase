@@ -142,8 +142,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
           _Heading('7. Children'),
           _Body(
-            'NotesCase is not directed to children under 18. We do not knowingly '
-            'collect data from anyone under 18. If a parent or guardian believes we '
+            'NotesCase is not directed to children under 12. We do not knowingly '
+            'collect data from anyone under 12. If a parent or guardian believes we '
             'have such data, please contact us and we will delete it.',
           ),
 
@@ -166,7 +166,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ),
 
           _Heading('10. Contact'),
-          _Body('Vrutsa Solutions\nChennai, Tamil Nadu, India\nprivacy@vrutsa.com'),
+          _Body('Vrutsa Solutions\nChennai, Tamil Nadu, India\ncontact@vrutsasolutions.com'),
 
           const SizedBox(height: 24),
           Divider(color: cs.outlineVariant),
