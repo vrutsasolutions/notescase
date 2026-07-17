@@ -6,6 +6,7 @@ import 'firebase_options.dart';
 import 'providers.dart';
 import 'screens/home.dart';
 import 'screens/sign_in.dart';
+import 'screens/privacy_policy_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,6 +48,23 @@ class VaultApp extends ConsumerWidget {
         ),
       ),
       home: const _AppRoot(),
+      // Lets /privacy work as a real, directly-loadable URL when this app
+      // is built for web and deployed (flutter build web). On web, if the
+      // browser's initial URL is /privacy, Flutter looks it up here and
+      // shows PrivacyPolicyScreen directly — bypassing splash/auth
+      // entirely — so it behaves like a normal static page for anyone
+      // (including Play Store review) visiting that link.
+      //
+      // In-app taps (from sign_in.dart) still use
+      // Navigator.of(context).push(MaterialPageRoute(...)) directly, which
+      // works regardless of this map — this route is what makes the
+      // *direct URL* work, not what the in-app button uses.
+      //
+      // Requires a hosting rewrite so a hard refresh on /privacy doesn't
+      // 404 — see firebase.json note in the deployment steps.
+      routes: {
+        '/privacy': (context) => const PrivacyPolicyScreen(),
+      },
     );
   }
 }

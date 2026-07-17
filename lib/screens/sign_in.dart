@@ -1,7 +1,12 @@
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../providers.dart';
+import 'privacy_policy_screen.dart';
+
+const String _consentKey = 'accepted_privacy_v1';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
@@ -17,6 +22,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   final _passwordController = TextEditingController();
   bool _isRegistering = false;
 
+  // Consent gate — applies to BOTH the Google path and the desktop
+  // email/password path below, since either one creates an account.
+  bool _accepted = false;
+  bool _consentLoaded = false;
+
   // Google Sign-In only works on Android/iOS/web via Firebase — the C++
   // SDK used on desktop platforms doesn't support it.
   bool get _isDesktop =>
@@ -26,6 +36,51 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               defaultTargetPlatform == TargetPlatform.macOS);
 
   @override
+  void initState() {
+    super.initState();
+    _restoreConsent();
+  }
+
+  Future<void> _restoreConsent() async {
+    bool accepted = false;
+    try {
+      // Timeout guards against platforms (seen on Windows when the plugin
+      // isn't fully registered with the native runner) where the
+      // SharedPreferences platform channel call hangs indefinitely instead
+      // of throwing — without this, _consentLoaded would never flip to
+      // true and the checkbox would stay invisible forever.
+      final p = await SharedPreferences.getInstance()
+          .timeout(const Duration(seconds: 3));
+      accepted = p.getBool(_consentKey) ?? false;
+    } catch (_) {
+      // Couldn't read/write persisted consent on this platform — fail
+      // safe by defaulting to NOT accepted, and still show the checkbox
+      // so the user isn't blocked from ever seeing or ticking it. Consent
+      // just won't be remembered across restarts on a platform where this
+      // is failing.
+      accepted = false;
+    }
+    if (!mounted) return;
+    setState(() {
+      _accepted = accepted;
+      _consentLoaded = true;
+    });
+  }
+
+  Future<void> _setConsent(bool value) async {
+    setState(() => _accepted = value);
+    try {
+      final p = await SharedPreferences.getInstance()
+          .timeout(const Duration(seconds: 3));
+      await p.setBool(_consentKey, value);
+    } catch (_) {
+      // Persisting failed on this platform — the checkbox state for THIS
+      // session is still correct (already applied via setState above), it
+      // just won't survive an app restart. Not worth blocking sign-in over.
+    }
+  }
+
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
@@ -33,6 +88,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   }
 
   Future<void> _signInWithGoogle() async {
+    if (!_accepted || _busy) return;
     setState(() {
       _busy = true;
       _error = null;
@@ -48,6 +104,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   }
 
   Future<void> _signInWithEmail() async {
+    if (!_accepted || _busy) return;
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
@@ -100,12 +157,66 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(color: cs.onSurfaceVariant),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 24),
+
+                if (_consentLoaded)
+                  InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: _busy ? null : () => _setConsent(!_accepted),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Checkbox(
+                            value: _accepted,
+                            onChanged:
+                                _busy ? null : (v) => _setConsent(v ?? false),
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 12),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 13.5,
+                                    height: 1.4,
+                                    color: cs.onSurfaceVariant,
+                                  ),
+                                  children: [
+                                    const TextSpan(
+                                        text: 'I have read and agree to the '),
+                                    TextSpan(
+                                      text: 'Privacy Policy',
+                                      style: TextStyle(
+                                          color: cs.primary,
+                                          fontWeight: FontWeight.w600),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () =>
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (_) =>
+                                                    const PrivacyPolicyScreen(),
+                                              ),
+                                            ),
+                                    ),
+                                    const TextSpan(text: '.'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 10),
 
                 if (!_isDesktop) ...[
                   // Android / iOS / web: Google Sign-In.
                   FilledButton.icon(
-                    onPressed: _busy ? null : _signInWithGoogle,
+                    onPressed: (_accepted && !_busy) ? _signInWithGoogle : null,
                     icon: const Icon(Icons.login_rounded),
                     label: Text(
                         _busy ? 'Signing in…' : 'Continue with Google'),
@@ -137,7 +248,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   ),
                   const SizedBox(height: 16),
                   FilledButton.icon(
-                    onPressed: _busy ? null : _signInWithEmail,
+                    onPressed: (_accepted && !_busy) ? _signInWithEmail : null,
                     icon: const Icon(Icons.login_rounded),
                     label: Text(_busy
                         ? 'Please wait…'
@@ -154,6 +265,15 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     child: Text(_isRegistering
                         ? 'Already have an account? Sign in'
                         : 'New here? Create an account'),
+                  ),
+                ],
+
+                if (!_accepted && _consentLoaded) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    'Please accept the Privacy Policy to continue.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 12.5, color: cs.outline),
                   ),
                 ],
 

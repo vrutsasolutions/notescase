@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 
 import '../models/note.dart';
 import '../providers.dart';
+import 'delete_account_screen.dart';
 import 'editor.dart';
 import 'trash.dart';
 
@@ -129,13 +130,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       case 'signout':
                         ref.read(authServiceProvider).signOut();
                         break;
+                      case 'delete_account':
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const DeleteAccountScreen()));
+                        break;
                     }
                   },
-                  itemBuilder: (_) => const [
-                    PopupMenuItem(value: 'archive', child: Text('Archive')),
-                    PopupMenuItem(value: 'trash', child: Text('Trash')),
-                    PopupMenuDivider(),
-                    PopupMenuItem(value: 'signout', child: Text('Sign out')),
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(value: 'archive', child: Text('Archive')),
+                    const PopupMenuItem(value: 'trash', child: Text('Trash')),
+                    const PopupMenuDivider(),
+                    const PopupMenuItem(value: 'signout', child: Text('Sign out')),
+                    const PopupMenuDivider(),
+                    PopupMenuItem(
+                      value: 'delete_account',
+                      child: Text(
+                        'Delete my account & data',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.error),
+                      ),
+                    ),
                   ],
                 ),
               ],
