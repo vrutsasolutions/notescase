@@ -1,0 +1,64 @@
+name: notes_case
+description: " — a privacy-first personal notebook backed by Firebase."
+publish_to: 'none'
+version: 2.0.0+5
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management
+  flutter_riverpod: ^2.5.1
+
+  # Firebase backend (this block is release-train compatible:
+  # firebase_core 3.x <-> firebase_auth 5.x <-> cloud_firestore 5.x)
+  firebase_core: ^4.11.0
+  firebase_auth: ^6.5.4
+  cloud_firestore: ^6.6.0
+
+  # Local preferences (theme) — supported on every platform including web
+  shared_preferences: ^2.2.3
+
+  # UI
+  flutter_staggered_grid_view: ^0.7.0
+
+  # Utilities
+  share_plus: ^13.2.0
+  uuid: ^4.4.0
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  flutter_launcher_icons: 0.14.4
+
+
+
+# REMOVED from v1 (these caused the blank screen — no web/Windows support):
+#   sqflite_sqlcipher, flutter_secure_storage, local_auth, path_provider,
+#   path, crypto, file_picker
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/logo.png
+
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+
+  web:
+    generate: true
+
+  windows:
+    generate: true
+
+  macos:
+    generate: false
+
+  image_path: "assets/logo.png"
