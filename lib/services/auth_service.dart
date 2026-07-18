@@ -1,18 +1,36 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
   User? get currentUser => _auth.currentUser;
 
-  Future<UserCredential> signInWithGoogle() {
-    final provider = GoogleAuthProvider();
+  Future<UserCredential> signInWithGoogle() async {
     if (kIsWeb) {
+      final provider = GoogleAuthProvider();
       return _auth.signInWithPopup(provider);
     }
-    return _auth.signInWithProvider(provider);
+
+    // Native flow: talks to Google Play Services directly, no browser
+    // Custom Tab involved, so the sessionStorage/redirect error page
+    // can't occur.
+    final googleUser = await _googleSignIn.signIn();
+    if (googleUser == null) {
+      throw FirebaseAuthException(
+        code: 'sign-in-cancelled',
+        message: 'Google sign-in was cancelled.',
+      );
+    }
+    final googleAuth = await googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    return _auth.signInWithCredential(credential);
   }
 
   Future<UserCredential> signInWithEmail(String email, String password) {
@@ -24,7 +42,10 @@ class AuthService {
         email: email, password: password);
   }
 
-  Future<void> signOut() => _auth.signOut();
+  Future<void> signOut() async {
+    await _googleSignIn.signOut();
+    await _auth.signOut();
+  }
 
   /// Firebase requires a *recent* sign-in before it will allow deleting an
   /// account (throws FirebaseAuthException: requires-recent-login
@@ -49,12 +70,22 @@ class AuthService {
       return;
     }
 
-    final provider = GoogleAuthProvider();
     if (kIsWeb) {
+      final provider = GoogleAuthProvider();
       await user.reauthenticateWithPopup(provider);
-    } else {
-      await user.reauthenticateWithProvider(provider);
+      return;
     }
+
+    final googleUser = await _googleSignIn.signIn();
+    if (googleUser == null) {
+      throw StateError('Re-authentication was cancelled.');
+    }
+    final googleAuth = await googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    await user.reauthenticateWithCredential(credential);
   }
 
   /// Deletes the Firebase Authentication record itself. Call
