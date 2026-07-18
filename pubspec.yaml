@@ -1,7 +1,7 @@
 name: notes_case
 description: " — a privacy-first personal notebook backed by Firebase."
 publish_to: 'none'
-version: 2.0.0+4
+version: 2.0.0+5
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
